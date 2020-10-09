@@ -1,21 +1,24 @@
 //src/app.ts
-import express from "express";  
+import express from "express";
 import { Application } from 'express';
-import bodyParser from "body-parser";                       
+import bodyParser from "body-parser";
 import cors from "cors";
-class App {                         
-public app: Application;                        
-constructor() { 
-this.app = express();                           
-this.setConfig();                                                                          }                                                 
-private setConfig() { 
-//Allows us to receive requests with data in json format
+//importing our controller
+import { Controller } from "./main.controller";
+class App {
+public app: Application;
+//declaring our controller
+public pokeController: Controller;
+constructor() {
+this.app = express();
+this.setConfig();
+//Creating and assigning a new instance of our controller
+this.pokeController = new Controller(this.app);
+}
+private setConfig() {
 this.app.use(bodyParser.json({ limit: "50mb" }));
-                        
-//Allows us to receive requests with data in x-www-form-urlencoded format
 this.app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-//Enables cors                           
-this.app.use(cors());                         
-}                       
-}                                               
+this.app.use(cors());
+}
+}
 export default new App().app;
